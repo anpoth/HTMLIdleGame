@@ -1,0 +1,10 @@
+{
+    "configurations": [
+        {
+            "type": "chrome",
+            "name": "file:///C:/Users/alego/Desktop/HTML%20Idle%20Game/index.html",
+            "request": "launch",
+            "url": "file:///C:/Users/alego/Desktop/HTML%20Idle%20Game/index.html"
+        }
+    ]
+}

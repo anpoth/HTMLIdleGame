@@ -1,0 +1,55 @@
+body{
+    background-color: rgb(154, 156, 156);
+}
+
+div{
+    display: flex;
+    flex-direction: column;
+}
+
+.main{
+    float: left;
+    width: 50%;
+}
+
+.marketplace, .forgeDiv{
+    display: none;
+}
+
+table, th, td{
+    border: 1px solid black;
+    width: fit-content;
+}
+
+label{
+    font-size: 25px;
+    font-family: sans-serif;
+}
+
+
+.resourceTbl{
+    border-spacing: 2px;
+    font-size: 25px;
+    font-family: sans-serif;
+}
+
+h3,h1{
+    font-family: sans-serif;
+    font-style: italic;
+}
+
+button{
+    background-color: lightgray;
+    font-size: 18px;
+    font-family: sans-serif;
+    cursor: pointer;
+    box-shadow: 0 4px #999;
+    margin: 5px;
+}
+button:active {
+    box-shadow: 0 4px grey;
+    transform: translateY(4px);
+}
+button:hover{
+    background-color: #a2a2a2;
+}

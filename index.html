@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html>
+    <head> 
+        <title>HTML Idle Game v2.0</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="main.css">
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+        <script src="app.js"></script>
+
+        <h1>Enter Witty Title Here</h1>
+
+        <!-- Currency Section -->
+        <div id="currency">
+            <label id="money"><img id="coin" src="graphics\coin.png"> $0.00</label>
+        </div>
+    </head>
+
+    <body>
+        <br>
+        <!-- Main Div -->
+        <div class="main">
+            <!-- Current Resources Table -->
+            <table class="resourceTbl">
+                <label id="resourceLbl">RESOURCES</label>
+                <!-- Wood Resources -->
+                <tr>
+                    <td><img id="axePic" src="graphics\axe.png"></td>
+                    <td><span id="axes">1</span></td>
+                </tr>
+                <tr>
+                    <td><img id="logPic" src="graphics\log.png"></td>
+                    <td><span id="logs">0</span></td>
+                </tr>
+                <!-- Stone Resources -->
+                <tr>
+                    <td><img id="pickaxePic" src='graphics\\pickaxe.png' alt='pickaxe image' style="visibility: hidden;"></td>
+                    <td><span id="pickaxes"></span></td>
+                </tr>
+                <tr>
+                    <td><img id="stonePic" src='graphics\\stone.png' alt='stone image' style="visibility: hidden;"></td>
+                    <td><span id="stone"></span></td>
+                </tr>
+                <tr>
+                    <td><img id="ironPic" src='graphics\\ironOre.png' alt='ironOre image' style="visibility: hidden;"></td>
+                    <td><span id="iron"></span></td>
+                </tr>
+            </table>
+            <!-- Current Upgrades Table -->
+            <table class="upgradeTbl">
+                <tr>
+                    <th><label id="chopperLbl" style="visibility: hidden;">Choppers</label></th>
+                    <th><label id="minerLbl" style="visibility: hidden;">Miners</label></th>
+                </tr>
+                <tr>
+                    <td><label id="choppers"></label></td>
+                    <td><label id="miners"></label></td>
+                </tr>
+            </table>
+            <!-- Action/ Menu Table -->
+            <table class="menuTbl">
+                <label>Perform Some Actions</label>
+                <tr>
+                    <td><button id="chop" type="button">Chop</button></td>
+                    <td><button id="mineStone" type="button" style="visibility: hidden;">Mine Stone</button></td>
+                    <td><button id="mineIron" type= "button" title="Mine some Iron" style="visibility: hidden;">Mine For Iron</button></td>
+                </tr>
+                <tr>
+                    <td><button id="visit" type= "button">Market</button></td>
+                    <td><button id="visitForge" style="visibility: hidden;">Forge</button></td>
+                </tr>
+                <tr>
+                    <td><button id="saveBtn">Save Game</button></td>
+                    <td><button id="loadBtn">Load Game</button></td>
+                </tr>
+            </table>
+        </div>
+        <!-- Marketplace Div -->
+        <div class="marketplace">
+            <!-- Sell Buttons -->
+            <table class="sellBtns">
+                <label id="sellLbl">Sell Your Resources!</label>
+                <tr>
+                    <th><label>Logs = $1</label></th>
+                    <th><label>Stone = $2</label></th>
+                    <th><label>Iron Ore = $5</label></th>
+                </tr>
+                <tr>
+                    <td><button id="sell1" type="button" title="1 log = 1 coin">Sell 1 log</button></td>
+                    <td><button id="sell1Stone" type="button" title="1 stone = 2 coins">Sell 1 stone</button></td>
+                    <td><button id="sell1Iron" type="button" title="1 iron ore = 5 coins">Sell 1 iron ore</button></td>
+                </tr>
+                <tr>
+                    <td><button id="sell10" type="button">Sell 10 logs</button></td>
+                    <td><button id="sell10Stone" type="button">Sell 10 stones</button></td>
+                    <td><button id="sell10Iron" type="button">Sell 10 iron ores</button></td>
+                </tr>
+                <tr>
+                    <td><button id="sellAll" type="button">Sell All logs</button></td>
+                    <td><button id="sellAllStone" type="button">Sell All stones</button></td>
+                    <td><button id="sellAllIron" type="button">Sell All iron ores</button></td>
+                </tr>
+            </table>
+            <!-- Upgrade Buttons -->
+            <table class="upgradeBtns">
+                <tr>
+                    <th><label id="upgradeLbl">UPGRADES</label></th>
+                </tr>
+                <tr>
+                    <td><button id="autoChopper" type="button" title="Auto Chopper will chop logs for you! Rate: 1/sec">Buy 1 Auto Chopper [$100]</button></td>
+                    <td><button id="autoMine" type="button" title="Atuo Miner will mine stone for you! Rate: 1/sec">Buy 1 Auto Miner [$200] [100 Stone]</button></td>
+                </tr>
+            </table>
+            <!-- Item Buttons -->
+            <table class="itemBtns">
+                <tr>
+                    <th><label>Items</label></th>
+                </tr>
+                <tr>
+                    <td><button id="buyAxe" type="button" title="More axes means more logs per chop!">Buy 1 Axe [$25]</button></td>
+                </tr>
+                <tr>
+                    <td><button id="buyPickaxe" type="button" title="Pickaxes can mine stone!">Buy 1 Pickaxe [$50]</button></td>
+                </tr>
+            </table>
+        </div>
+        <!-- Forge Div -->
+        <div class="forgeDiv">
+            <table class="forgeTbl">
+                <label>Forge Items and Gear!</label>
+                <tr>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td></td>
+                </tr>
+            </table>
+        </div>
+    </body>
+</html>
