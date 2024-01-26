@@ -22,30 +22,19 @@ $(document).ready(function(){
         pickaxePrice: 50,
         axePrice: 25 
     };
-    
 
-    // // Resources
-    // var logs = 0;
-    // var stone = 0;
-    // var iron = 100;
-    // // Items
-    // var pickaxes = 0;
-    // var axes = 1;
-    // // Currency
-    // var money = 1000;
-    // // Counters
-    // var logsPlus = 1;
-    // var stonePlus = 1;
-    // var ironPlus = 1;
-    // var autoLogPlus = 0;
-    // var autoStonePlus = 0;
-    // var autoIronPlus = 0;
-    // // Prices
-    // var autoMinePrice = 200;
-    // var autoChopperPrice = 100;
-    // var autoMineStone = 100;
-    // var pickaxePrice = 50;
-    // var axePrice = 25;
+    // Load data from local storage
+    if (localStorage.getItem("gameData")) {
+        let loadedData = JSON.parse(localStorage.getItem("gameData"));
+
+        // Check for null values
+        if (loadedData !== null) {
+            gameData = loadedData;
+        } else {
+            console.error("Loaded data is null");
+            alert("Error: Loaded data is null");
+        }
+    }
 
     // Constants
     const logPrice = 1;
@@ -59,11 +48,6 @@ $(document).ready(function(){
     var autoChopperButton = document.getElementById("autoChopper");
     var axeButton = document.getElementById("buyAxe");
     var pickaxeButton = document.getElementById("buyPickaxe");
-
-    let savedData = [];
-
-
-    
 
     // #endregion
 
@@ -107,20 +91,20 @@ $(document).ready(function(){
     // #region
     $("#sell1").click(function(){
         gameData.logs--;
-        gameData.money += gameData.logPrice;
+        gameData.money += logPrice;
         changeInventory();
         changeMarket();
     })
 
     $("#sell10").click(function(){
         gameData.logs-=10;
-        gameData.money += gameData.logPrice*10;
+        gameData.money += logPrice*10;
         changeInventory();
         changeMarket();
     })
 
     $("#sellAll").click(function(){
-        gameData.money += gameData.logPrice*gameData.logs;
+        gameData.money += logPrice*gameData.logs;
         gameData.logs = 0;
         changeInventory();
         changeMarket();
@@ -128,20 +112,20 @@ $(document).ready(function(){
 
     $("#sell1Stone").click(function(){
         gameData.stone--;
-        gameData.money += gameData.stonePrice;
+        gameData.money += stonePrice;
         changeInventory();
         changeMarket();
     })
 
     $("#sell10Stone").click(function(){
         gameData.stone-=10;
-        gameData.money += gameData.stonePrice*10;
+        gameData.money += stonePrice*10;
         changeInventory();
         changeMarket();
     })
 
     $("#sellAllStone").click(function(){
-        gameData.money += gameData.stonePrice*gameData.stone;
+        gameData.money += stonePrice*gameData.stone;
         gameData.stone = 0;
         changeInventory();
         changeMarket();
@@ -149,20 +133,20 @@ $(document).ready(function(){
 
     $("#sell1Iron").click(function(){
         gameData.iron--;
-        gameData.money += gameData.ironPrice;
+        gameData.money += ironPrice;
         changeInventory();
         changeMarket();
     })
 
     $("#sell10Iron").click(function(){
         gameData.iron-=10;
-        gameData.money += gameData.ironPrice*10;
+        gameData.money += ironPrice*10;
         changeInventory();
         changeMarket();
     })
 
     $("#sellAllIron").click(function(){
-        gameData.money += gameData.ironPrice*gameData.iron;
+        gameData.money += ironPrice*gameData.iron;
         gameData.iron = 0;
         changeInventory();
         changeMarket();
@@ -411,56 +395,59 @@ $(document).ready(function(){
     // #region
 
     $("#saveBtn").click(function(){
-        savedData = [
-            gameData.logs, 
-            gameData.stone, 
-            gameData.iron, 
-            gameData.pickaxes,
-            gameData.axes,
-            gameData.money, 
-            gameData.logsPlus,
-            gameData.stonePlus,
-            gameData.ironPlus,
-            gameData.autoLogPlus,
-            gameData.autoStonePlus,
-            gameData.autoIronPlus,
-            gameData.autoMinePrice,
-            gameData.autoChopperPrice,
-            gameData.autoMineStone,
-            gameData.pickaxePrice,
-            gameData.axePrice
-        ];    
+        // Save data to gameData array
         if (localStorage){
-            localStorage.setItem("saveState", JSON.stringify(savedData));
-            console.log("Save Data", savedData);
+            localStorage.setItem("gameData", JSON.stringify(gameData));
+            console.log("Game Data Saved", gameData);
             alert("Game Saved Successfully!");
         }
-    })
+    });
     
     $("#loadBtn").click(function(){
-        gameData = savedData.map(loadGameData);
-        console.log("Game Data", gameData);
-        alert("Loaded Game Data");
-    })
+        // Check if there is saved data
+        if (localStorage.getItem("gameData")) {
+            // Parse the saved data from localStorage
+            let loadedData = JSON.parse(localStorage.getItem("gameData"));
 
-    function loadGameData(value){
-        return parseFloat(value);
-    }
-
-    // Test for localStorage
-    // #region
-
-    if (localStorage){
-        gameData = localStorage.getItem("saveState");
-        console.log("Game Data", gameData);
-        if (gameData) {
-            gameData = JSON.parse(gameData);
+            // Log success
+            console.log("Loaded Game Data", gameData);
+            alert("Loaded Game Data");
+        } else {
+            // Log an error if there is no saved data
+            console.error("No saved data found");
+            alert("No saved data found");
         }
-    }else{
-        console.log("No local storage");
-    }
+    });
 
-    // #endregion
+    // Let player reset their game if they wish to
+    $("#resetBtn").click(function(){
+        let text;
+        if (confirm("Are you sure you want to reset your game?") == true){
+            text = "Yes";
+            gameData = {
+                logs: 0, 
+                stone: 0, 
+                iron: 100, 
+                pickaxes: 0,
+                axes: 1,
+                money: 1000,
+                logsPlus: 1,
+                stonePlus: 1,
+                ironPlus: 1,
+                autoLogPlus: 0,
+                autoStonePlus: 0,
+                autoIronPlus: 0,
+                autoMinePrice: 200,
+                autoChopperPrice: 100,
+                autoMineStone: 100,
+                pickaxePrice: 50,
+                axePrice: 25 
+            };
+            console.log("Game Reset Successful!");
+        }else {
+            text = "No";
+        }
+    });
 
     // #endregion
 
@@ -472,10 +459,10 @@ $(document).ready(function(){
         changeInventory();
         changeMarket();
         changeForge();
-        if (localStorage) {
-            localStorage.setItem("saveData", JSON.stringify(savedData));
-            console.log("Save Data", savedData)
-        }
+        // if (localStorage) {
+        //     localStorage.setItem("gameData", JSON.stringify(gameData));
+        //     console.log("Game Data", gameData)
+        // }
     }, baseGameTime);
     // #endregion
 });
