@@ -44,10 +44,21 @@ $(document).ready(function(){
     var baseGameTime = 1000;
 
     // Game elements
+    // #region
     var autoMinerButton = document.getElementById("autoMine");
     var autoChopperButton = document.getElementById("autoChopper");
     var axeButton = document.getElementById("buyAxe");
     var pickaxeButton = document.getElementById("buyPickaxe");
+    var sell1Button = document.getElementById("sell1");
+    var sell10Button = document.getElementById("sell10");
+    var sellAllButton = document.getElementById("sellAll");
+    var sell1StoneButton = document.getElementById("sell1Stone");
+    var sell10StoneButton = document.getElementById("sell10Stone");
+    var sellAllStoneButton = document.getElementById("sellAllStone");
+    var sell1IronButton = document.getElementById("sell1Iron");
+    var sell10IronButton = document.getElementById("sell10Iron");
+    var sellAllIronButton = document.getElementById("sellAllIron");
+    // #endregion
 
     // #endregion
 
@@ -299,88 +310,38 @@ $(document).ready(function(){
     // Function to update market screen to show correct buttons
     // #region
     function changeMarket(){
-        // if(logs > 0){
-        //     $("#sellAll").css("display", "block");
-        // }else{
-        //     $("#sellAll").css("display", "none");
-        // }
-
-        // if(logs >= 1){
-        //     $("#sell1").css("display", "block");
-        // }else{
-        //     $("#sell1").css("display", "none");
-        // }
-
-        // if(logs >= 10){
-        //     $("#sell10").css("display", "block");
-        // }else{
-        //     $("#sell10").css("display", "none");
-        // }
-
-        // if(stone > 0){
-        //     $("#sellAllStone").css("display", "block");
-        // }else{
-        //     $("#sellAllStone").css("display", "none");
-        // }
-
-        // if(stone >= 1){
-        //     $("#sell1Stone").css("display", "block");
-        // }else{
-        //     $("#sell1Stone").css("display", "none");
-        // }
-
-        // if(stone >= 10){
-        //     $("#sell10Stone").css("display", "block");
-        // }else{
-        //     $("#sell10Stone").css("display", "none");
-        // }
-
-        // if(iron >= 1){
-        //     $("#sell1Iron").css("display", "block");
-        // }else{
-        //     $("#sell1Iron").css("display", "none");
-        // }
-
-        // if(iron >= 10){
-        //     $("#sell10Iron").css("display", "block");
-        // }else{
-        //     $("#sell10Iron").css("display", "none");
-        // }
-        
-        // if(iron > 0){
-        //     $("#sellAllIron").css("display", "block");
-        // }else{
-        //     $("#sellAllIron").css("display", "none");
-        // }
-
-        if(gameData.money >= gameData.autoChopperPrice){
-            autoChopperButton.disabled = false;
-        }else{
-            autoChopperButton.disabled = true;
+        // Array for resource buttons
+        const resourceButtons = [
+            { resource: "logs", buttons: [sell1Button, sell10Button, sellAllButton] },
+            { resource: "stone", buttons: [sell1StoneButton, sell10StoneButton, sellAllStoneButton] },
+            { resource: "iron", buttons: [sell1IronButton, sell10IronButton, sellAllIronButton] }
+        ];
+    
+        for (const { resource, buttons } of resourceButtons) {
+            buttons[0].disabled = gameData[resource] >= 1 ? false : true;
+            buttons[1].disabled = gameData[resource] >= 10 ? false : true;
+            buttons[2].disabled = gameData[resource] > 0 ? false : true;
         }
+    
+        // Array for item buttons
+        const itemButtons = [
+            { button: autoChopperButton, price: gameData.autoChopperPrice },
+            { button: pickaxeButton, price: gameData.pickaxePrice },
+            { button: axeButton, price: gameData.axePrice }
+        ];
+    
+        for (const { button, price } of itemButtons) {
+            button.disabled = gameData.money >= price ? false : true;
+        }
+    
+        // Check and set display for autoMine button
+        autoMineButtonDisplay();
+        autoMinerButton.disabled = gameData.money >= gameData.autoMinePrice && gameData.stone >= gameData.autoMineStone ? false : true;
+    }
 
-        if(gameData.money >= gameData.pickaxePrice){
-            pickaxeButton.disabled = false;
-        }else{
-            pickaxeButton.disabled = true;
-        }
-
-        if(gameData.money >= gameData.axePrice){
-            axeButton.disabled = false;
-        }else{
-            axeButton.disabled = true;
-        }
-
-        if(gameData.pickaxes < 1){
-            $("#autoMine").css("display", "none")
-        }else{
-            $("#autoMine").css("display", "block")
-        }
-        if(gameData.money >= gameData.autoMinePrice && gameData.stone >= gameData.autoMineStone){
-            autoMinerButton.disabled = false;
-        }else{
-            autoMinerButton.disabled = true;
-        }
+    // Function for showing and hiding the autoMine button
+    function autoMineButtonDisplay() {
+        $("#autoMine").css("display", gameData.pickaxes < 1 ? "none" : "block");
     }
     // #endregion
 
