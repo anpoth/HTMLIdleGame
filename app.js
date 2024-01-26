@@ -15,8 +15,14 @@ $(document).ready(function(){
         ironPlus: 1,
         autoLogPlus: 0,
         autoStonePlus: 0,
-        autoIronPlus: 0,    
+        autoIronPlus: 0,
+        autoMinePrice: 200,
+        autoChopperPrice: 100,
+        autoMineStone: 100,
+        pickaxePrice: 50,
+        axePrice: 25 
     };
+    
 
     // // Resources
     // var logs = 0;
@@ -34,18 +40,18 @@ $(document).ready(function(){
     // var autoLogPlus = 0;
     // var autoStonePlus = 0;
     // var autoIronPlus = 0;
+    // // Prices
+    // var autoMinePrice = 200;
+    // var autoChopperPrice = 100;
+    // var autoMineStone = 100;
+    // var pickaxePrice = 50;
+    // var axePrice = 25;
 
-    // Prices
-    var autoMinePrice = 200;
-    var autoChopperPrice = 100;
-    var autoMineStone = 100;
-    var pickaxePrice = 50;
-    var axePrice = 25;
-    var logPrice = 1;
-    var stonePrice = 2;
-    var ironPrice = 5;
-    var priceScalar = 1.5;
-
+    // Constants
+    const logPrice = 1;
+    const stonePrice = 2;
+    const ironPrice = 5;
+    const priceScalar = 1.5;
     var baseGameTime = 1000;
 
     // Game elements
@@ -55,7 +61,8 @@ $(document).ready(function(){
     var pickaxeButton = document.getElementById("buyPickaxe");
 
     let savedData = [];
-    let loadData = [];
+
+
     
 
     // #endregion
@@ -63,20 +70,20 @@ $(document).ready(function(){
     // Action buttons
     // #region
     $("#chop").click(function(){
-        if (axes >= 2) {
-            logs += axes;
+        if (gameData.axes >= 2) {
+            gameData.logs += gameData.axes;
             changeInventory();
             changeMarket();
         }else{
-            logs += logsPlus;
+            gameData.logs += gameData.logsPlus;
             changeInventory();
             changeMarket();
         }
     })
 
     $("#mineStone").click(function(){
-        if (pickaxes > 1) {
-            stone += pickaxes;
+        if (gameData.pickaxes > 1) {
+            gameData.stone += gameData.pickaxes;
             changeInventory();
         }else{
             stone += stonePlus;
@@ -85,11 +92,11 @@ $(document).ready(function(){
     })
 
     $("#mineIron").click(function(){
-        if (pickaxes >= 3) {
-            iron += pickaxes / 3;
+        if (gameData.pickaxes >= 3) {
+            gameData.iron += gameData.pickaxes / 3;
             changeInventory();
         }else{
-            iron += ironPlus;
+            gameData.iron += gameData.ironPlus;
             changeInventory();
         }
     })
@@ -99,64 +106,64 @@ $(document).ready(function(){
     // Sell Buttons
     // #region
     $("#sell1").click(function(){
-        logs--;
-        money += logPrice;
+        gameData.logs--;
+        gameData.money += gameData.logPrice;
         changeInventory();
         changeMarket();
     })
 
     $("#sell10").click(function(){
-        logs-=10;
-        money += logPrice*10;
+        gameData.logs-=10;
+        gameData.money += gameData.logPrice*10;
         changeInventory();
         changeMarket();
     })
 
     $("#sellAll").click(function(){
-        money += logPrice*logs;
-        logs = 0;
+        gameData.money += gameData.logPrice*gameData.logs;
+        gameData.logs = 0;
         changeInventory();
         changeMarket();
     })
 
     $("#sell1Stone").click(function(){
-        stone--;
-        money += stonePrice;
+        gameData.stone--;
+        gameData.money += gameData.stonePrice;
         changeInventory();
         changeMarket();
     })
 
     $("#sell10Stone").click(function(){
-        stone-=10;
-        money += stonePrice*10;
+        gameData.stone-=10;
+        gameData.money += gameData.stonePrice*10;
         changeInventory();
         changeMarket();
     })
 
     $("#sellAllStone").click(function(){
-        money += stonePrice*stone;
-        stone = 0;
+        gameData.money += gameData.stonePrice*gameData.stone;
+        gameData.stone = 0;
         changeInventory();
         changeMarket();
     })
 
     $("#sell1Iron").click(function(){
-        iron--;
-        money += ironPrice;
+        gameData.iron--;
+        gameData.money += gameData.ironPrice;
         changeInventory();
         changeMarket();
     })
 
     $("#sell10Iron").click(function(){
-        iron-=10;
-        money += ironPrice*10;
+        gameData.iron-=10;
+        gameData.money += gameData.ironPrice*10;
         changeInventory();
         changeMarket();
     })
 
     $("#sellAllIron").click(function(){
-        money += ironPrice*iron;
-        iron = 0;
+        gameData.money += gameData.ironPrice*gameData.iron;
+        gameData.iron = 0;
         changeInventory();
         changeMarket();
     })
@@ -166,22 +173,22 @@ $(document).ready(function(){
     // Upgrade buttons
     // #region
     $("#autoChopper").click(function(){
-        money -= autoChopperPrice;
-        autoLogPlus++;
-        autoChopperPrice *= priceScalar;
-        $("#autoChopper").html("Buy 1 Auto Chopper [$" + autoChopperPrice.toFixed(2) + "]");
+        gameData.money -= gameData.autoChopperPrice;
+        gameData.autoLogPlus++;
+        gameData.autoChopperPrice *= priceScalar;
+        $("#autoChopper").html("Buy 1 Auto Chopper [$" + gameData.autoChopperPrice.toFixed(2) + "]");
         changeInventory();
         changeMarket();
         changeForge();
     })
 
     $("#autoMine").click(function(){
-        money -= autoMinePrice;
-        stone -= autoMineStone;
-        autoStonePlus++;
-        autoMinePrice *= priceScalar;
-        autoMineStone *= priceScalar;
-        $("#autoMine").html("Buy 1 Auto Miner [$" + autoMinePrice.toFixed(2) + "] [" + autoMineStone.toFixed(2) + "] stone");
+        gameData.money -= gameData.autoMinePrice;
+        gameData.stone -= gameData.autoMineStone;
+        gameData.autoStonePlus++;
+        gameData.autoMinePrice *= priceScalar;
+        gameData.autoMineStone *= priceScalar;
+        $("#autoMine").html("Buy 1 Auto Miner [$" + gameData.autoMinePrice.toFixed(2) + "] [" + gameData.autoMineStone.toFixed(2) + "] stone");
         changeInventory();
         changeMarket();
         changeForge();
@@ -192,19 +199,19 @@ $(document).ready(function(){
     // Item Buttons
     // #region
     $("#buyPickaxe").click(function(){
-        money -= pickaxePrice;
-        pickaxes++;
-        pickaxePrice *= priceScalar;
-        $("#buyPickaxe").html("Buy 1 Pickaxe [$" + pickaxePrice.toFixed(2) + "]");
+        gameData.money -= gameData.pickaxePrice;
+        gameData.pickaxes++;
+        gameData.pickaxePrice *= priceScalar;
+        $("#buyPickaxe").html("Buy 1 Pickaxe [$" + gameData.pickaxePrice.toFixed(2) + "]");
         changeInventory();
         changeMarket();
     })
 
     $("#buyAxe").click(function(){
-        money -= axePrice;
-        axes++;
-        axePrice *= 2;
-        $("#buyAxe").html("Buy 1 Axe [$" + axePrice.toFixed(2) + "]");
+        gameData.money -= gameData.axePrice;
+        gameData.axes++;
+        gameData.axePrice *= 2;
+        $("#buyAxe").html("Buy 1 Axe [$" + gameData.axePrice.toFixed(2) + "]");
         changeInventory();
         changeMarket();
     })
@@ -238,16 +245,16 @@ $(document).ready(function(){
     // Function to show inventory and current resources
     // #region
     function changeInventory(){
-        $("#money").html("<img id='coin' src='graphics\\coin.png'> $" + money.toFixed(2));
+        $("#money").html("<img id='coin' src='graphics\\coin.png'> $" + gameData.money);
         
-        if(axes > 1){
-            $("#axes").html(axes.toFixed(0));
+        if(gameData.axes > 1){
+            $("#axes").html(gameData.axes.toFixed(0));
         }else{
             $("#axes").html("1");
         }
 
-        if(autoLogPlus >= 1){
-            $("#choppers").html("<img src='graphics\\chopper.png' alt='chopper image'> " + autoLogPlus);
+        if(gameData.autoLogPlus >= 1){
+            $("#choppers").html("<img src='graphics\\chopper.png' alt='chopper image'> " + gameData.autoLogPlus);
             $("#choppers").css("visibility", "visible");
             $("#chopperLbl").css("visibility", "visible");
         }else{
@@ -255,14 +262,14 @@ $(document).ready(function(){
             $("#chopperLbl").css("visibility", "hidden");
         }
 
-        if(logs > 0){
-            $("#logs").html(logs.toFixed(0));
+        if(gameData.logs > 0){
+            $("#logs").html(gameData.logs.toFixed(0));
         }else{
-            $("#logs").html(logs.toFixed(0));
+            $("#logs").html(gameData.logs.toFixed(0));
         }
 
-        if(pickaxes > 0){
-            $("#pickaxes").html(pickaxes.toFixed(0));
+        if(gameData.pickaxes > 0){
+            $("#pickaxes").html(gameData.pickaxes.toFixed(0));
             $("#mineStone").css("visibility", "visible");
             $("#pickaxePic").css("visibility", "visible");
         }else{
@@ -270,14 +277,14 @@ $(document).ready(function(){
             $("#mineStone").css("visibility", "hidden");
         }
 
-        if(pickaxes >= 3){
+        if(gameData.pickaxes >= 3){
             $("#mineIron").css("visibility", "visible");
         }else{
             $("#mineIron").css("visibility", "hidden");
         }
 
-        if(autoStonePlus >= 1){
-            $("#miners").html("<img src='graphics\\miner.png' alt='miner image'> " + autoStonePlus);
+        if(gameData.autoStonePlus >= 1){
+            $("#miners").html("<img src='graphics\\miner.png' alt='miner image'> " + gameData.autoStonePlus);
             $("#miner").css("visibility", "visible");
             $("#minerLbl").css("visibility", "visible");
         }else{
@@ -285,21 +292,21 @@ $(document).ready(function(){
             $("#minerLbl").css("visibility", "hidden");
         }
 
-        if(stone > 0){
-            $("#stone").html(stone.toFixed(0));
+        if(gameData.stone > 0){
+            $("#stone").html(gameData.stone.toFixed(0));
             $("#stonePic").css("visibility", "visible");
         }else{
             $("#stone").html("");
         }
 
-        if(iron > 0){
-            $("#iron").html(iron.toFixed(0));
+        if(gameData.iron > 0){
+            $("#iron").html(gameData.iron.toFixed(0));
             $("#ironPic").css("visibility", "visible");
         }else{
             $("#iron").html("");
         }
 
-        if(iron >= 100){
+        if(gameData.iron >= 100){
             $("#visitForge").css("visibility", "visible");
         }
     }
@@ -362,30 +369,30 @@ $(document).ready(function(){
         //     $("#sellAllIron").css("display", "none");
         // }
 
-        if(money >= autoChopperPrice){
+        if(gameData.money >= gameData.autoChopperPrice){
             autoChopperButton.disabled = false;
         }else{
             autoChopperButton.disabled = true;
         }
 
-        if(money >= pickaxePrice){
+        if(gameData.money >= gameData.pickaxePrice){
             pickaxeButton.disabled = false;
         }else{
             pickaxeButton.disabled = true;
         }
 
-        if(money >= axePrice){
+        if(gameData.money >= gameData.axePrice){
             axeButton.disabled = false;
         }else{
             axeButton.disabled = true;
         }
 
-        if(pickaxes < 1){
+        if(gameData.pickaxes < 1){
             $("#autoMine").css("display", "none")
         }else{
             $("#autoMine").css("display", "block")
         }
-        if(money >= autoMinePrice && stone >= autoMineStone){
+        if(gameData.money >= gameData.autoMinePrice && gameData.stone >= gameData.autoMineStone){
             autoMinerButton.disabled = false;
         }else{
             autoMinerButton.disabled = true;
@@ -405,34 +412,39 @@ $(document).ready(function(){
 
     $("#saveBtn").click(function(){
         savedData = [
-            logs, 
-            stone, 
-            iron, 
-            pickaxes,
-            axes,
-            money,   
-            logsPlus, 
-            stonePlus, 
-            ironPlus,
-            autoLogPlus, 
-            autoStonePlus,
-            autoIronPlus
+            gameData.logs, 
+            gameData.stone, 
+            gameData.iron, 
+            gameData.pickaxes,
+            gameData.axes,
+            gameData.money, 
+            gameData.logsPlus,
+            gameData.stonePlus,
+            gameData.ironPlus,
+            gameData.autoLogPlus,
+            gameData.autoStonePlus,
+            gameData.autoIronPlus,
+            gameData.autoMinePrice,
+            gameData.autoChopperPrice,
+            gameData.autoMineStone,
+            gameData.pickaxePrice,
+            gameData.axePrice
         ];    
         if (localStorage){
             localStorage.setItem("saveState", JSON.stringify(savedData));
-            console.log(savedData);
+            console.log("Save Data", savedData);
             alert("Game Saved Successfully!");
         }
     })
     
     $("#loadBtn").click(function(){
-        loadData = savedData.map(loadGameData);
-        console.log(loadData);
+        gameData = savedData.map(loadGameData);
+        console.log("Game Data", gameData);
         alert("Loaded Game Data");
     })
 
     function loadGameData(value){
-        return value;
+        return parseFloat(value);
     }
 
     // Test for localStorage
@@ -440,9 +452,9 @@ $(document).ready(function(){
 
     if (localStorage){
         gameData = localStorage.getItem("saveState");
-        console.log(gameData);
+        console.log("Game Data", gameData);
         if (gameData) {
-            loadData = JSON.parse(gameData);
+            gameData = JSON.parse(gameData);
         }
     }else{
         console.log("No local storage");
@@ -455,14 +467,14 @@ $(document).ready(function(){
     // Game Interval
     // #region
     setInterval(function(){
-        logs += autoLogPlus;
-        stone += autoStonePlus;
+        gameData.logs += gameData.autoLogPlus;
+        gameData.stone += gameData.autoStonePlus;
         changeInventory();
         changeMarket();
         changeForge();
         if (localStorage) {
             localStorage.setItem("saveData", JSON.stringify(savedData));
-            console.log(savedData)
+            console.log("Save Data", savedData)
         }
     }, baseGameTime);
     // #endregion
