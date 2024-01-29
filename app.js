@@ -1,11 +1,5 @@
 /* 
- * Copyright (c) 2024 <Alexander Poth>
- * 
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-
+ * Copyright (c) 2024 Alexander Poth, All rights reserved.
  */
 $(document).ready(function(){
     // Variables
@@ -361,16 +355,12 @@ $(document).ready(function(){
     }
     // #endregion
 
-    // Save and Load Game buttons
+    // Save/Load and Reset Game buttons
     // #region
 
     $("#saveBtn").click(function(){
-        // Save data to gameData array
-        if (localStorage){
-            localStorage.setItem("gameData", JSON.stringify(gameData));
-            console.log("Game Data Saved", gameData);
-            alert("Game Saved Successfully!");
-        }
+        // Call saveGameData function
+        saveGameData();
     });
     
     $("#loadBtn").click(function(){
@@ -414,10 +404,20 @@ $(document).ready(function(){
                 axePrice: 25 
             };
             console.log("Game Reset Successful!");
+            saveGameData();
         }else {
             text = "No";
         }
     });
+
+    // save game data function
+    function saveGameData(){
+        if (localStorage){
+            localStorage.setItem("gameData", JSON.stringify(gameData));
+            console.log("Game Data Saved", gameData);
+            alert("Game Saved Successfully!");
+        }
+    };
 
     // #endregion
 
