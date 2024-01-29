@@ -84,7 +84,7 @@ $(document).ready(function(){
             gameData.stone += gameData.pickaxes;
             changeInventory();
         }else{
-            stone += stonePlus;
+            gameData.stone += gameData.stonePlus;
             changeInventory();
         }
     })
@@ -242,70 +242,48 @@ $(document).ready(function(){
 
     // Function to show inventory and current resources
     // #region
-    function changeInventory(){
-        $("#money").html("<img id='coin' src='graphics\\coin.png'> $" + gameData.money);
-        
-        if(gameData.axes > 1){
-            $("#axes").html(gameData.axes.toFixed(0));
-        }else{
-            $("#axes").html("1");
-        }
-
-        if(gameData.autoLogPlus >= 1){
-            $("#choppers").html("<img src='graphics\\chopper.png' alt='chopper image'> " + gameData.autoLogPlus);
-            $("#choppers").css("visibility", "visible");
-            $("#chopperLbl").css("visibility", "visible");
-        }else{
-            $("#choppers").css("visibility", "hidden");
-            $("#chopperLbl").css("visibility", "hidden");
-        }
-
-        if(gameData.logs > 0){
-            $("#logs").html(gameData.logs.toFixed(0));
-        }else{
-            $("#logs").html(gameData.logs.toFixed(0));
-        }
-
-        if(gameData.pickaxes > 0){
+    function changeInventory() {
+        const visibilityOptions = {
+            visible: 'visible',
+            hidden: 'hidden'
+        };
+    
+        $("#money").html(`<img id='coin' src='graphics\\coin.png'> $${gameData.money}`);
+        $("#axes").html(gameData.axes > 1 ? gameData.axes.toFixed(0) : "1");
+    
+        displayElement("#choppers", gameData.autoLogPlus >= 1);
+        displayElement("#chopperLbl", gameData.autoLogPlus >= 1);
+    
+        $("#logs").html(gameData.logs.toFixed(0));
+    
+        if (gameData.pickaxes > 0) {
             $("#pickaxes").html(gameData.pickaxes.toFixed(0));
-            $("#mineStone").css("visibility", "visible");
-            $("#pickaxePic").css("visibility", "visible");
-        }else{
-            $("#pickaxes").html("");
-            $("#mineStone").css("visibility", "hidden");
+            setElementVisibility("#mineStone", "visible");
+            setElementVisibility("#pickaxePic", "visible");
         }
-
-        if(gameData.pickaxes >= 3){
-            $("#mineIron").css("visibility", "visible");
-        }else{
-            $("#mineIron").css("visibility", "hidden");
+    
+        setElementVisibility("#mineIron", gameData.pickaxes >= 3);
+    
+        displayElement("#miners", gameData.autoStonePlus >= 1);
+        displayElement("#miner", gameData.autoStonePlus >= 1);
+        displayElement("#minerLbl", gameData.autoStonePlus >= 1);
+    
+        $("#stone").html(gameData.stone > 0 ? gameData.stone.toFixed(0) : "0");
+        setElementVisibility("#stonePic", gameData.stone >= 0);
+    
+        $("#iron").html(gameData.iron > 0 ? gameData.iron.toFixed(0) : "");
+        setElementVisibility("#ironPic", gameData.iron > 0);
+    
+        setElementVisibility("#visitForge", gameData.iron >= 100);
+    
+        // Function to set visibility of elements
+        function setElementVisibility(selector, condition) {
+            $(selector).css("visibility", condition ? visibilityOptions.visible : visibilityOptions.hidden);
         }
-
-        if(gameData.autoStonePlus >= 1){
-            $("#miners").html("<img src='graphics\\miner.png' alt='miner image'> " + gameData.autoStonePlus);
-            $("#miner").css("visibility", "visible");
-            $("#minerLbl").css("visibility", "visible");
-        }else{
-            $("#miner").css("visibility", "hidden");
-            $("#minerLbl").css("visibility", "hidden");
-        }
-
-        if(gameData.stone > 0){
-            $("#stone").html(gameData.stone.toFixed(0));
-            $("#stonePic").css("visibility", "visible");
-        }else{
-            $("#stone").html("");
-        }
-
-        if(gameData.iron > 0){
-            $("#iron").html(gameData.iron.toFixed(0));
-            $("#ironPic").css("visibility", "visible");
-        }else{
-            $("#iron").html("");
-        }
-
-        if(gameData.iron >= 100){
-            $("#visitForge").css("visibility", "visible");
+    
+        // Function to display elements
+        function displayElement(selector, condition) {
+            $(selector).html(condition ? `<img src='graphics\\${selector.slice(1)}.png' alt='${selector.slice(1)} image'> ${gameData[selector.slice(1)]}` : "");
         }
     }
     // #endregion
@@ -320,6 +298,7 @@ $(document).ready(function(){
             { resource: "iron", buttons: [sell1IronButton, sell10IronButton, sellAllIronButton] }
         ];
     
+        // Determine which sell buttons are enabled based on current inventory
         for (const { resource, buttons } of resourceButtons) {
             buttons[0].disabled = gameData[resource] >= 1 ? false : true;
             buttons[1].disabled = gameData[resource] >= 10 ? false : true;
@@ -333,6 +312,7 @@ $(document).ready(function(){
             { button: axeButton, price: gameData.axePrice }
         ];
     
+        // Determine which item buttons are enabled based on current inventory
         for (const { button, price } of itemButtons) {
             button.disabled = gameData.money >= price ? false : true;
         }
