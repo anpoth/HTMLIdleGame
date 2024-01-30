@@ -271,7 +271,9 @@ $(document).ready(function(){
         $("#stone").html(Math.max(gameData.stone, 0).toFixed(0));
         $("#iron").html(Math.max(gameData.iron, 0).toFixed(0));
     
-        setVisibility("#visitForge", gameData.iron >= 1);
+        if (gameData.iron >= 1) {
+            $("#visitForge").css("visibility", "visible");
+        }
     
         // Function to set visibility of elements
         function setVisibility(selectors, condition) {
