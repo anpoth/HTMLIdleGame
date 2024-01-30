@@ -14,10 +14,9 @@ $(document).ready(function(){
         axes: 1,
         money: 0,
         logsPlus: 1,
-        stonePlus: 1,
         ironPlus: 1,
-        autoLogPlus: 0,
-        autoStonePlus: 0,
+        choppers: 0,
+        miners: 0,
         autoIronPlus: 0,
         autoMinePrice: 200,
         autoChopperPrice: 100,
@@ -63,8 +62,6 @@ $(document).ready(function(){
     var sellAllIronButton = document.getElementById("sellAllIron");
     // #endregion
 
-    // #endregion
-
     // Action buttons
     // #region
     $("#chop").click(function(){
@@ -80,11 +77,11 @@ $(document).ready(function(){
     })
 
     $("#mineStone").click(function(){
-        if (gameData.pickaxes > 1) {
+        if (gameData.pickaxes >= 1) {
             gameData.stone += gameData.pickaxes;
             changeInventory();
         }else{
-            gameData.stone += gameData.stonePlus;
+            gameData.stone ++;
             changeInventory();
         }
     })
@@ -172,7 +169,7 @@ $(document).ready(function(){
     // #region
     $("#autoChopper").click(function(){
         gameData.money -= gameData.autoChopperPrice;
-        gameData.autoLogPlus++;
+        gameData.choppers++;
         gameData.autoChopperPrice *= priceScalar;
         $("#autoChopper").html("Buy 1 Auto Chopper [$" + gameData.autoChopperPrice.toFixed(2) + "]");
         changeInventory();
@@ -183,7 +180,7 @@ $(document).ready(function(){
     $("#autoMine").click(function(){
         gameData.money -= gameData.autoMinePrice;
         gameData.stone -= gameData.autoMineStone;
-        gameData.autoStonePlus++;
+        gameData.miners++;
         gameData.autoMinePrice *= priceScalar;
         gameData.autoMineStone *= priceScalar;
         $("#autoMine").html("Buy 1 Auto Miner [$" + gameData.autoMinePrice.toFixed(2) + "] [" + gameData.autoMineStone.toFixed(2) + "] stone");
@@ -248,11 +245,12 @@ $(document).ready(function(){
             hidden: 'hidden'
         };
     
-        $("#money").html(`<img id='coin' src='graphics\\coin.png'> $${gameData.money}`);
+        $("#money").html(`<img id='coin' src='graphics\\coin.png'> $${gameData.money.toFixed(2)}`);
         $("#axes").html(gameData.axes > 1 ? gameData.axes.toFixed(0) : "1");
     
-        displayElement("#choppers", gameData.autoLogPlus >= 1);
-        displayElement("#chopperLbl", gameData.autoLogPlus >= 1);
+        setElementVisibility("#chopperLbl", gameData.choppers >= 1);
+        displayElement("#choppers", gameData.choppers >= 1);
+        
     
         $("#logs").html(gameData.logs.toFixed(0));
     
@@ -260,19 +258,24 @@ $(document).ready(function(){
             $("#pickaxes").html(gameData.pickaxes.toFixed(0));
             setElementVisibility("#mineStone", "visible");
             setElementVisibility("#pickaxePic", "visible");
+            setElementVisibility("#stonePic", "visible");
+            setElementVisibility("#stone", "visible");
+        }
+
+        if (gameData.pickaxes >= 3) {
+            setElementVisibility("#ironPic", "visible");
+            setElementVisibility("#iron", "visible");
         }
     
         setElementVisibility("#mineIron", gameData.pickaxes >= 3);
     
-        displayElement("#miners", gameData.autoStonePlus >= 1);
-        displayElement("#miner", gameData.autoStonePlus >= 1);
-        displayElement("#minerLbl", gameData.autoStonePlus >= 1);
+        displayElement("#miners", gameData.miners >= 1);
+        displayElement("#miner", gameData.miners >= 1);
+        setElementVisibility("#minerLbl", gameData.miners >= 1);
     
         $("#stone").html(gameData.stone > 0 ? gameData.stone.toFixed(0) : "0");
-        setElementVisibility("#stonePic", gameData.stone >= 0);
     
-        $("#iron").html(gameData.iron > 0 ? gameData.iron.toFixed(0) : "");
-        setElementVisibility("#ironPic", gameData.iron > 0);
+        $("#iron").html(gameData.iron > 0 ? gameData.iron.toFixed(0) : "0");
     
         setElementVisibility("#visitForge", gameData.iron >= 100);
     
@@ -343,23 +346,25 @@ $(document).ready(function(){
         saveGameData();
     });
     
-    $("#loadBtn").click(function(){
-        // Check if there is saved data
-        if (localStorage.getItem("gameData")) {
-            // Parse the saved data from localStorage
-            let loadedData = JSON.parse(localStorage.getItem("gameData"));
+    // $("#loadBtn").click(function(){
+    //     // Check if there is saved data
+    //     if (localStorage.getItem("gameData")) {
+    //         // Parse the saved data from localStorage
+    //         let loadedData = JSON.parse(localStorage.getItem("gameData"));
 
-            // Log success
-            console.log("Loaded Game Data", gameData);
-            alert("Loaded Game Data");
-        } else {
-            // Log an error if there is no saved data
-            console.error("No saved data found");
-            alert("No saved data found");
-        }
-    });
+    //         // Log success
+    //         console.log("Loaded Game Data", gameData);
+    //         alert("Loaded Game Data");
+    //     } else {
+    //         // Log an error if there is no saved data
+    //         console.error("No saved data found");
+    //         alert("No saved data found");
+    //     }
+    // });
 
     // Let player reset their game if they wish to
+    
+    
     $("#resetBtn").click(function(){
         let text;
         if (confirm("Are you sure you want to reset your game?") == true){
@@ -372,10 +377,9 @@ $(document).ready(function(){
                 axes: 1,
                 money: 0,
                 logsPlus: 1,
-                stonePlus: 1,
                 ironPlus: 1,
-                autoLogPlus: 0,
-                autoStonePlus: 0,
+                choppers: 0,
+                miners: 0,
                 autoIronPlus: 0,
                 autoMinePrice: 200,
                 autoChopperPrice: 100,
@@ -385,6 +389,9 @@ $(document).ready(function(){
             };
             console.log("Game Reset Successful!");
             saveGameData();
+            changeInventory();
+            changeMarket();
+            location.reload();
         }else {
             text = "No";
         }
@@ -404,8 +411,8 @@ $(document).ready(function(){
     // Game Interval
     // #region
     setInterval(function(){
-        gameData.logs += gameData.autoLogPlus;
-        gameData.stone += gameData.autoStonePlus;
+        gameData.logs += gameData.choppers;
+        gameData.stone += gameData.miners;
         changeInventory();
         changeMarket();
         changeForge();
