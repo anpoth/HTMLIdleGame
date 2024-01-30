@@ -54,9 +54,11 @@ $(document).ready(function(){
     var sell1Button = document.getElementById("sell1");
     var sell10Button = document.getElementById("sell10");
     var sellAllButton = document.getElementById("sellAll");
+    var sellStoneRate = document.getElementById("sellStoneRate");
     var sell1StoneButton = document.getElementById("sell1Stone");
     var sell10StoneButton = document.getElementById("sell10Stone");
     var sellAllStoneButton = document.getElementById("sellAllStone");
+    var sellIronRate = document.getElementById("sellIronRate");
     var sell1IronButton = document.getElementById("sell1Iron");
     var sell10IronButton = document.getElementById("sell10Iron");
     var sellAllIronButton = document.getElementById("sellAllIron");
@@ -246,44 +248,37 @@ $(document).ready(function(){
         };
     
         $("#money").html(`<img id='coin' src='graphics\\coin.png'> $${gameData.money.toFixed(2)}`);
-        $("#axes").html(gameData.axes > 1 ? gameData.axes.toFixed(0) : "1");
+        $("#axes").html(Math.max(gameData.axes, 1).toFixed(0));
     
-        setElementVisibility("#chopperLbl", gameData.choppers >= 1);
+        setVisibility("#chopperLbl", gameData.choppers >= 1);
         displayElement("#choppers", gameData.choppers >= 1);
-        
     
         $("#logs").html(gameData.logs.toFixed(0));
     
         if (gameData.pickaxes > 0) {
             $("#pickaxes").html(gameData.pickaxes.toFixed(0));
-            setElementVisibility("#mineStone", "visible");
-            setElementVisibility("#pickaxePic", "visible");
-            setElementVisibility("#stonePic", "visible");
-            setElementVisibility("#stone", "visible");
+            setVisibility("#mineStone", "visible");
+            setVisibility("#pickaxePic, #stonePic, #stone, #stoneSellRate, #sell1Stone, #sell10Stone, #sellAllStone", "visible");
         }
-
+    
         if (gameData.pickaxes >= 3) {
-            setElementVisibility("#ironPic", "visible");
-            setElementVisibility("#iron", "visible");
-            setElementVisibility("#mineIron", "visible");
+            setVisibility("#ironPic, #iron, #mineIron, #ironSellRate, #sell1Iron, #sell10Iron, #sellAllIron", "visible");
         }
     
-        if (gameData.miners >= 1) {
-            displayElement("#miners", gameData.miners >= 1);
-            displayElement("#miner", gameData.miners >= 1);
-            setElementVisibility("#minerLbl", "visible");
-        }
-        
-        $("#stone").html(gameData.stone > 0 ? gameData.stone.toFixed(0) : "0");
-        $("#iron").html(gameData.iron > 0 ? gameData.iron.toFixed(0) : "0");
+        setVisibility("#miners, #minerLbl", gameData.miners >= 1);
+        displayElement("#miners, #miner", gameData.miners >= 1);
     
-        if (gameData.iron >= 1) {
-            $("#visitForge").css("visibility", "visible");
-        }
+        $("#stone").html(Math.max(gameData.stone, 0).toFixed(0));
+        $("#iron").html(Math.max(gameData.iron, 0).toFixed(0));
+    
+        setVisibility("#visitForge", gameData.iron >= 1);
     
         // Function to set visibility of elements
-        function setElementVisibility(selector, condition) {
-            $(selector).css("visibility", condition ? visibilityOptions.visible : visibilityOptions.hidden);
+        function setVisibility(selectors, condition) {
+            const selectorArray = selectors.split(", ");
+            selectorArray.forEach(selector => {
+                $(selector).css("visibility", condition ? visibilityOptions.visible : visibilityOptions.hidden);
+            });
         }
     
         // Function to display elements
@@ -302,7 +297,7 @@ $(document).ready(function(){
             { resource: "stone", buttons: [sell1StoneButton, sell10StoneButton, sellAllStoneButton] },
             { resource: "iron", buttons: [sell1IronButton, sell10IronButton, sellAllIronButton] }
         ];
-    
+
         // Determine which sell buttons are enabled based on current inventory
         for (const { resource, buttons } of resourceButtons) {
             buttons[0].disabled = gameData[resource] >= 1 ? false : true;
