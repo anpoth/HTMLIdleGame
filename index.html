@@ -94,23 +94,23 @@ bettering my HTML/CSS skills. Game is very barebones and progressing slowly.
                 <label id="sellLbl">Sell Your Resources!</label>
                 <tr>
                     <th><label>Logs = $1</label></th>
-                    <th><label>Stone = $2</label></th>
-                    <th><label>Iron Ore = $5</label></th>
+                    <th><label id="stoneSellRate" style="visibility: hidden;">Stone = $2</label></th>
+                    <th><label id="ironSellRate" style="visibility: hidden;">Iron Ore = $5</label></th>
                 </tr>
                 <tr>
                     <td><button id="sell1" type="button" title="1 log = 1 coin">Sell 1 log</button></td>
-                    <td><button id="sell1Stone" type="button" title="1 stone = 2 coins">Sell 1 stone</button></td>
-                    <td><button id="sell1Iron" type="button" title="1 iron ore = 5 coins">Sell 1 iron ore</button></td>
+                    <td><button id="sell1Stone" type="button" title="1 stone = 2 coins" style="visibility: hidden;">Sell 1 stone</button></td>
+                    <td><button id="sell1Iron" type="button" title="1 iron ore = 5 coins" style="visibility: hidden;">Sell 1 iron ore</button></td>
                 </tr>
                 <tr>
                     <td><button id="sell10" type="button">Sell 10 logs</button></td>
-                    <td><button id="sell10Stone" type="button">Sell 10 stones</button></td>
-                    <td><button id="sell10Iron" type="button">Sell 10 iron ores</button></td>
+                    <td><button id="sell10Stone" type="button" style="visibility: hidden;">Sell 10 stones</button></td>
+                    <td><button id="sell10Iron" type="button" style="visibility: hidden;">Sell 10 iron ores</button></td>
                 </tr>
                 <tr>
                     <td><button id="sellAll" type="button">Sell All logs</button></td>
-                    <td><button id="sellAllStone" type="button">Sell All stones</button></td>
-                    <td><button id="sellAllIron" type="button">Sell All iron ores</button></td>
+                    <td><button id="sellAllStone" type="button" style="visibility: hidden;">Sell All stones</button></td>
+                    <td><button id="sellAllIron" type="button" style="visibility: hidden;"  >Sell All iron ores</button></td>
                 </tr>
             </table>
             <!-- Upgrade Buttons -->
