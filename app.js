@@ -265,19 +265,21 @@ $(document).ready(function(){
         if (gameData.pickaxes >= 3) {
             setElementVisibility("#ironPic", "visible");
             setElementVisibility("#iron", "visible");
+            setElementVisibility("#mineIron", "visible");
         }
     
-        setElementVisibility("#mineIron", gameData.pickaxes >= 3);
-    
-        displayElement("#miners", gameData.miners >= 1);
-        displayElement("#miner", gameData.miners >= 1);
-        setElementVisibility("#minerLbl", gameData.miners >= 1);
-    
+        if (gameData.miners >= 1) {
+            displayElement("#miners", gameData.miners >= 1);
+            displayElement("#miner", gameData.miners >= 1);
+            setElementVisibility("#minerLbl", "visible");
+        }
+        
         $("#stone").html(gameData.stone > 0 ? gameData.stone.toFixed(0) : "0");
-    
         $("#iron").html(gameData.iron > 0 ? gameData.iron.toFixed(0) : "0");
     
-        setElementVisibility("#visitForge", gameData.iron >= 100);
+        if (gameData.iron >= 1) {
+            $("#visitForge").css("visibility", "visible");
+        }
     
         // Function to set visibility of elements
         function setElementVisibility(selector, condition) {
