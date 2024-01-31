@@ -22,7 +22,8 @@ $(document).ready(function(){
         autoChopperPrice: 100,
         autoMineStone: 100,
         pickaxePrice: 50,
-        axePrice: 25 
+        axePrice: 25,
+        ironIngot: 0
     };
 
     // Load data from local storage
@@ -215,6 +216,24 @@ $(document).ready(function(){
 
     // #endregion
 
+    // Forge buttons
+    // #region
+
+    $("#ironIngotBtn").click(function(){
+        if (gameData.iron <= 0) {
+            alert("You don't have any iron ore in your inventory");
+        } else {
+            gameData.ironIngot++;
+            gameData.iron--;
+        }
+        changeForge();
+        changeInventory();
+        changeMarket();
+    });
+
+
+    // #endregion
+
     // Change Screen Buttons
     // #region
     $("#visit").click(function(){
@@ -273,6 +292,12 @@ $(document).ready(function(){
     
         if (gameData.iron >= 1) {
             $("#visitForge").css("visibility", "visible");
+        }
+
+        if (gameData.ironIngot >= 1) {
+            $("#ironIngotPic").css("visibility", "visible");
+            $("#ironIngot").css("visibility", "visible");
+            $("#ironIngot").html(Math.max(gameData.ironIngot, 0).toFixed(0));
         }
     
         // Function to set visibility of elements
@@ -384,7 +409,8 @@ $(document).ready(function(){
                 autoChopperPrice: 100,
                 autoMineStone: 100,
                 pickaxePrice: 50,
-                axePrice: 25 
+                axePrice: 25,
+                ironIngot: 0
             };
             console.log("Game Reset Successful!");
             saveGameData();
