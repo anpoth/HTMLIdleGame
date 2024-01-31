@@ -292,11 +292,7 @@ $(document).ready(function(){
             $("#visitForge").css("visibility", "visible");
         }
 
-        if (gameData.ironIngot >= 1) {
-            $("#ironIngotPic").css("visibility", "visible");
-            $("#ironIngot").css("visibility", "visible");
-            $("#ironIngot").html(Math.max(gameData.ironIngot, 0).toFixed(0));
-        }
+
     
         // Function to set visibility of elements
         function setVisibility(selectors, condition) {
@@ -362,6 +358,15 @@ $(document).ready(function(){
     // Function to update Forge screen
     // #region
     function changeForge(){
+        // Set display for forge iron button
+        if (gameData.ironIngot >= 1) {
+            $("#ironIngotPic").css("visibility", "visible");
+            $("#ironIngot").css("visibility", "visible");
+            $("#ironIngot").html(Math.max(gameData.ironIngot, 0).toFixed(0));
+        }
+
+        
+
 
     }
     // #endregion
