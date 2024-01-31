@@ -2,6 +2,7 @@
  * Copyright (c) 2024 Alexander Poth, All rights reserved.
  */
 $(document).ready(function(){
+
     // Variables
     // #region
 
@@ -45,6 +46,7 @@ $(document).ready(function(){
     const ironPrice = 5;
     const priceScalar = 1.5;
     var baseGameTime = 1000;
+
 
     // Game elements
     // #region
@@ -174,7 +176,6 @@ $(document).ready(function(){
         gameData.money -= gameData.autoChopperPrice;
         gameData.choppers++;
         gameData.autoChopperPrice *= priceScalar;
-        $("#autoChopper").html("Buy 1 Auto Chopper [$" + gameData.autoChopperPrice.toFixed(2) + "]");
         changeInventory();
         changeMarket();
         changeForge();
@@ -186,7 +187,6 @@ $(document).ready(function(){
         gameData.miners++;
         gameData.autoMinePrice *= priceScalar;
         gameData.autoMineStone *= priceScalar;
-        $("#autoMine").html("Buy 1 Auto Miner [$" + gameData.autoMinePrice.toFixed(2) + "] [" + gameData.autoMineStone.toFixed(2) + "] stone");
         changeInventory();
         changeMarket();
         changeForge();
@@ -200,7 +200,6 @@ $(document).ready(function(){
         gameData.money -= gameData.pickaxePrice;
         gameData.pickaxes++;
         gameData.pickaxePrice *= priceScalar;
-        $("#buyPickaxe").html("Buy 1 Pickaxe [$" + gameData.pickaxePrice.toFixed(2) + "]");
         changeInventory();
         changeMarket();
     })
@@ -209,7 +208,6 @@ $(document).ready(function(){
         gameData.money -= gameData.axePrice;
         gameData.axes++;
         gameData.axePrice *= 2;
-        $("#buyAxe").html("Buy 1 Axe [$" + gameData.axePrice.toFixed(2) + "]");
         changeInventory();
         changeMarket();
     })
@@ -318,6 +316,12 @@ $(document).ready(function(){
     // Function to update market screen to show correct buttons
     // #region
     function changeMarket(){
+        // Array to update sell button prices
+        $("#buyAxe").html("Buy 1 Axe [$" + gameData.axePrice.toFixed(2) + "]");
+        $("#buyPickaxe").html("Buy 1 Pickaxe [$" + gameData.pickaxePrice.toFixed(2) + "]");
+        $("#autoChopper").html("Buy 1 Auto Chopper [$" + gameData.autoChopperPrice.toFixed(2) + "]");
+        $("#autoMine").html("Buy 1 Auto Miner [$" + gameData.autoMinePrice.toFixed(2) + "] [" + gameData.autoMineStone.toFixed(2) + "] stone");
+
         // Array for resource buttons
         const resourceButtons = [
             { resource: "logs", buttons: [sell1Button, sell10Button, sellAllButton] },
