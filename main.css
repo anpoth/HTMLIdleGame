@@ -20,8 +20,8 @@ div{
     display: none;
 }
 
-table, th, td{
-    /* border: 1px solid black; */
+table, th, td, tr{
+    border: 1px solid black;
     width: fit-content;
 }
 
@@ -32,6 +32,12 @@ label{
 
 
 .resourceTbl{
+    border-spacing: 2px;
+    font-size: 25px;
+    font-family: sans-serif;
+}
+
+.furnaceTbl{
     border-spacing: 2px;
     font-size: 25px;
     font-family: sans-serif;
