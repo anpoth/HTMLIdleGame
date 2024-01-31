@@ -266,7 +266,7 @@ $(document).ready(function(){
         }
     
         setVisibility("#miners, #minerLbl", gameData.miners >= 1);
-        displayElement("#miners, #miner", gameData.miners >= 1);
+        displayElement("#miners", gameData.miners >= 1);
     
         $("#stone").html(Math.max(gameData.stone, 0).toFixed(0));
         $("#iron").html(Math.max(gameData.iron, 0).toFixed(0));
