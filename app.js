@@ -6,6 +6,10 @@ $(document).ready(function(){
     // Variables
     // #region
 
+    var importData = "";
+    var exportData = "";
+    var loadedData = "";
+
     // Array for gameData
     let gameData = {
         logs: 0, 
@@ -29,7 +33,7 @@ $(document).ready(function(){
 
     // Load data from local storage
     if (localStorage.getItem("gameData")) {
-        let loadedData = JSON.parse(localStorage.getItem("gameData"));
+        loadedData = JSON.parse(localStorage.getItem("gameData"));
 
         // Check for null values
         if (loadedData !== null) {
@@ -379,25 +383,26 @@ $(document).ready(function(){
         saveGameData();
     });
     
-    // $("#loadBtn").click(function(){
-    //     // Check if there is saved data
-    //     if (localStorage.getItem("gameData")) {
-    //         // Parse the saved data from localStorage
-    //         let loadedData = JSON.parse(localStorage.getItem("gameData"));
+    $("#importBtn").click(function(){
+        // Import game data
+        importData = atob(window.prompt("Import Game Data"));
+        gameData = JSON.parse(importData);
+        console.log(JSON.parse(gameData));
+        gameData = JSON.parse(gameData);
+        localStorage.setItem("gameData", JSON.stringify(gameData));
+        changeForge();
+        changeInventory();
+        changeMarket();
+    });
 
-    //         // Log success
-    //         console.log("Loaded Game Data", gameData);
-    //         alert("Loaded Game Data");
-    //     } else {
-    //         // Log an error if there is no saved data
-    //         console.error("No saved data found");
-    //         alert("No saved data found");
-    //     }
-    // });
+    $("#exportBtn").click(function(){
+        // Export game data
+        saveGameData();
+        exportData = btoa(JSON.stringify(localStorage.getItem("gameData")));
+        prompt("Export Game Data", exportData);
+    });
 
     // Let player reset their game if they wish to
-    
-    
     $("#resetBtn").click(function(){
         let text;
         if (confirm("Are you sure you want to reset your game?") == true){
